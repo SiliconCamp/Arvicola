@@ -6,26 +6,24 @@ hh_url = "https://hh.ru/search/vacancy?area=1&clusters=true&enable_snippets=true
 
 hh_headers = {"user-agent": "my-app/0.0.1"}
 
-for page in range(0,12):
-    hh_curl =  hh_url + str(page)
+for page in range(0, 12):
+
+    curtime = time.time()
+
+    hh_curl = hh_url + str(page)
     print(hh_curl)
 
     hh_filename = str(page) + "compparsed.html"
 
     hh_page = requests.get(hh_curl, headers=hh_headers, timeout=None)
     hh_text = hh_page.text
-    hh_text = hh_text.split("<")
 
     hh_file = open(hh_filename, 'w', encoding='utf-8')
 
     line = 0
     print("Lines =", len(hh_text))
-
-    while line < len(hh_text):
-       if hh_text[line].find("data-qa=\"vacancy-serp__vacancy-employer\"") > 0:
-           hh_file.write(str(line) + "<" + hh_text[line] + "<BR>")
-       line += 1
+    print(time.time() - curtime)
 
     hh_file.close()
-    time.sleep(10)
+
 
