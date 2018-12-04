@@ -48,15 +48,15 @@ for page in range(0, int(last_page[-1].text)):
     print(hh_curl)
 
     hh_page = requests.get(hh_curl, headers=hh_headers, timeout=None)
-    hh_text = hh_page.text
     soup = BeautifulSoup(hh_page.text, 'html.parser')
 
-    line = 0
+    line = 1
     companies = soup.find_all(class_='bloko-link bloko-link_secondary')
 
     while line < len(companies):
         if not str(companies[line].text) in companies_unique:
-            hh_file.write(str(companies[line].text) + "<BR>" + "\n")
+            hh_file.write('<a href=\"https://hh.ru' + str(companies[line].get('href')) + '\">'
+                          + str(companies[line].text) + '</a> <br>' + '\n')
             companies_unique.append(str(companies[line].text))
         line += 1
 
@@ -64,5 +64,4 @@ for page in range(0, int(last_page[-1].text)):
     time.sleep(2)
 
 hh_file.close()
-
 
