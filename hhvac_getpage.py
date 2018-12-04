@@ -20,7 +20,9 @@ hh_filename - имя файла для сохранения результато
 companies_unique - накопительный список уникальных неповторяющихся названий компаний, чтобы исключить повторы.
 hh_file - объект для обращения к файлу записи результатов.
 page - номер полученной и обрабатываемой поисковой страницы по запросу.
-curtime - время начала работы цикла обработки страницы, нужно для вычисления длительности обработки
+cur_time - время начала работы цикла обработки страницы, нужно для вычисления длительности обработки
+cur_company - название компании при поочередном переборе
+cur_quant_of_companies - количество компаний в списке перед начало обработки новой страницы
 hh_text - исходный текст поисковой страницы, полученной по запросу. 
 '''
 
@@ -35,14 +37,14 @@ soup = BeautifulSoup(hh_page.text, 'html.parser')
 last_page = soup.find_all(class_='bloko-button HH-Pager-Control')
 print(last_page[-1].text)
 
-hh_filename = "compparsed.html"
-companies_unique = []
+hh_filename = str(time.time()) + "compparsed.html"
+companies_unique = {}
 
-hh_file = open(hh_filename, 'a', encoding='utf-8')
 
 for page in range(0, int(last_page[-1].text)):
 
-    curtime = time.time()
+    cur_time = time.time()
+    cur_quant_of_companies = len(companies_unique)
 
     hh_curl = hh_url + str(page)
     print(hh_curl)
@@ -54,14 +56,21 @@ for page in range(0, int(last_page[-1].text)):
     companies = soup.find_all(class_='bloko-link bloko-link_secondary')
 
     while line < len(companies):
-        if not str(companies[line].text) in companies_unique:
-            hh_file.write('<a href=\"https://hh.ru' + str(companies[line].get('href')) + '\">'
-                          + str(companies[line].text) + '</a> <br>' + '\n')
-            companies_unique.append(str(companies[line].text))
+        cur_company = str(companies[line].text)
+        companies_unique[cur_company] = str(companies[line].get('href'))
+
         line += 1
 
-    print(time.time() - curtime)
+    print("Page parsed for " + str(int((time.time() - cur_time) * 1000)) + " ms. Total: " + str(len(companies_unique))
+          + " companies (+" + str(len(companies_unique) - cur_quant_of_companies) + ")")
+
     time.sleep(2)
 
+hh_file = open(hh_filename, 'a', encoding='utf-8')
+
+line = 1
+for key in companies_unique:
+    hh_file.write(str(line) + '. <a href=\"https://hh.ru' + companies_unique[key] + '\">' + key + '</a> <br>' + '\n')
+    line += 1
 hh_file.close()
 
