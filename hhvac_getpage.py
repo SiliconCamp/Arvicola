@@ -26,8 +26,7 @@ cur_quant_of_companies - количество компаний в списке �
 hh_text - исходный текст поисковой страницы, полученной по запросу. 
 '''
 
-hh_url = "https://hh.ru/search/vacancy?area=1&clusters=true&enable_snippets=true&items_on_page=100&metro=4.179&" \
-         "metro=95.537&metro=97.603&metro=4.172&no_magic=true&order_by=publication_time&page="
+hh_url = "https://hh.ru/search/vacancy?area=1&clusters=true&enable_snippets=true&industry=7&items_on_page=100&no_magic=true&specialization=6&page="
 
 hh_headers = {"user-agent": "my-app/0.0.1"}
 
@@ -57,7 +56,10 @@ for page in range(0, int(last_page[-1].text)):
 
     while line < len(companies):
         cur_company = str(companies[line].text)
-        companies_unique[cur_company] = str(companies[line].get('href'))
+        if cur_company not in companies_unique:
+            companies_unique[cur_company] = [str(companies[line].get('href')), 1]
+        else:
+            companies_unique[cur_company][1] += 1
 
         line += 1
 
@@ -66,11 +68,13 @@ for page in range(0, int(last_page[-1].text)):
 
     time.sleep(2)
 
+print("Writing to file ...")
 hh_file = open(hh_filename, 'a', encoding='utf-8')
 
 line = 1
 for key in companies_unique:
-    hh_file.write(str(line) + '. <a href=\"https://hh.ru' + companies_unique[key] + '\">' + key + '</a> <br>' + '\n')
+    hh_file.write(str(line) + '. <a href=\"https://hh.ru' + companies_unique[key][0] + '\" target="_blank">'
+                  + key + '</a> ' + str(int(companies_unique[key][1])) + '<br>' + '\n')
     line += 1
 hh_file.close()
 
