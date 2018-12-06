@@ -26,7 +26,8 @@ cur_quant_of_companies - количество компаний в списке �
 hh_text - исходный текст поисковой страницы, полученной по запросу. 
 '''
 
-hh_url = "https://hh.ru/search/vacancy?area=1&clusters=true&enable_snippets=true&industry=7&items_on_page=100&no_magic=true&specialization=6&page="
+hh_url = "https://hh.ru/search/vacancy?area=1&clusters=true&enable_snippets=true&items_on_page=100&metro=4.179&" \
+         "metro=95.537&metro=97.603&metro=4.172&no_magic=true&page="
 
 hh_headers = {"user-agent": "my-app/0.0.1"}
 
