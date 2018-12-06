@@ -87,7 +87,7 @@ line = 1
 for key in companies_unique:
     hh_file.write(str(int(companies_unique[key][1])) + '\t <a href=\"https://hh.ru' + companies_unique[key][0] +
                   '\" target="_blank">')
-    if int(companies_unique[key][1]) > 10:
+    if int(companies_unique[key][1]) > 5:
         hh_file.write("<b>" + key + "</b>")
     else:
         hh_file.write(key)
