@@ -80,7 +80,7 @@ for key in companies_unique:
                       '\" target="_blank"> <b>' + key + '</b> </a> <br>' + '\n')
     line += 1
 
-hh_file.write('\n <br><br><br> -------------------- <br><br><br>\n')
+hh_file.write('\n <br> -------------------- <br><br>\n')
 
 print("Writing companies list to file ...")
 line = 1
