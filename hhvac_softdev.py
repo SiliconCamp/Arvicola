@@ -48,7 +48,7 @@ soup = BeautifulSoup(hh_page.text, 'html.parser')  # Просим BeautifulSoup 
 last_page = soup.find_all(class_='bloko-button HH-Pager-Control')  # Ищем в супе сколько у нас всего страниц, выводим
 print(last_page[-1].text)
 
-hh_filename = str(time.time()) + "compparsed.html"  # Придумываем имя файла, тупо берем текущее время и ставим вначале
+hh_filename = str(int(time.time())) + "compparsed.html"  # Придумываем имя файла, тупо берем текущее время и ставим вначале
 companies_unique = {}  # инициализируем словарик для данных о компаниях (без повторов).
 
 # Тут основной цикл - бежим по страницам с первой (0) до последней в выдаче

@@ -37,7 +37,7 @@ soup = BeautifulSoup(hh_page.text, 'html.parser')
 last_page = soup.find_all(class_='bloko-button HH-Pager-Control')
 print(last_page[-1].text)
 
-hh_filename = str(time.time()) + "compparsed.html"
+hh_filename = str(int(time.time())) + "compparsed.html"
 companies_unique = {}
 
 
