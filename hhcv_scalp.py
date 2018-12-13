@@ -16,7 +16,7 @@ def cv_parse(hh_filename):
     # data-hh-last-experience-id
 
     for line in range(0, len(cvs)):
-        cv_file = open("CVStore\\cv_" + str(cvids[line].get('data-hh-last-experience-id') + ".html"), 'w', encoding='utf-8')
+        cv_file = open("CVStore\\cv_" + str(cvids[line].get('data-hh-last-experience-id') + ".html"), 'a', encoding='utf-8')
 
         cv_file.write("\n\n\n <br>--- CV#:" + str(cvids[line].get('data-hh-last-experience-id')) +
                       " --- " + file_list[g] + "<br> \n\n\n")
@@ -35,9 +35,16 @@ def hhsave_getlist():
     return name_list
 
 
+# Основной цикл
+
+cur_time = time.time()
+
 file_list = hhsave_getlist()
 file_list = file_list[0]
 
 for g in range(0, len(file_list)):
     print(file_list[g], "\n")
     cv_parse(file_list[g])
+    print(int((cur_time - time.time()) * 1000), "ms")
+
+print(int((cur_time - time.time()) * 1000), "ms")
