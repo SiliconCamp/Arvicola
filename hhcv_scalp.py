@@ -1,5 +1,6 @@
 import time
 import os
+import re
 from bs4 import BeautifulSoup
 
 
@@ -18,10 +19,41 @@ def cv_parse(hh_filename):
     for line in range(0, len(cvs)):
         cv_file = open("CVStore\\cv_" + str(cvids[line].get('data-hh-last-experience-id') + ".html"), 'w', encoding='utf-8')
 
+        cv_soup = BeautifulSoup(str(cvs[line]), 'html.parser') # Грузим снапшот в отдельный суп
+
+        # Извлекаем и обрабатываем имя и возраст.
+        cv_fullname = cv_soup.find(class_="resume-search-item__fullname")
+        cv_fullname = str(cv_fullname.text)
+        cv_fullname = cv_fullname.split(",")
+        cv_fullname_list = cv_fullname[0].split(" ")
+        cv_fullname_template = ("\n<br>Фамилия", "\n<br>Имя", "\n<br>Отчество")
+
+
+        cv_file.write("<p>")
+        for name_item in range(0, len(cv_fullname_list)):
+            cv_file.write(cv_fullname_template[name_item] + ": <b>" + str(cv_fullname_list[name_item]) + "</b>")
+        cv_file.write("</p>\n\n\n")
+
+        if len(cv_fullname) > 1:
+            cv_file.write("<p>Возраст: " + str(cv_fullname[1]) + "</p>\n\n\n")
+
+        cv_comp_list = cv_soup.find_all(class_="resume-search-item__company-name")
+        cv_comp_set =[]
+
+        cv_file.write("<ul>\n")
+        for cv_comp in range(0, len(cv_comp_list)):
+            cv_file.write("<li>" + str(cv_comp_list[cv_comp].text) + "\n")
+            if str(cv_comp_list[cv_comp].text) not in cv_comp_set:
+                cv_comp_set.append(str(cv_comp_list[cv_comp].text))
+        cv_file.write("</ul>\n\n")
+
+        cv_file.write("<p>\n")
+        for cv_comp in range(0, len(cv_comp_set)):
+            cv_file.write(cv_comp_set[cv_comp] + " \n")
+        cv_file.write("</p>")
+
         cv_file.write("\n\n\n <br>--- CV#:" + str(cvids[line].get('data-hh-last-experience-id')) +
                       " --- " + file_list[g] + "<br> \n\n\n")
-
-        cv_soup = BeautifulSoup(str(cvs[line]), 'html.parser')
         cv_file.write(str(cv_soup.prettify()))
 
         cv_file.close()
