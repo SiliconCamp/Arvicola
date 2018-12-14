@@ -16,11 +16,13 @@ def cv_parse(hh_filename):
     # data-hh-last-experience-id
 
     for line in range(0, len(cvs)):
-        cv_file = open("CVStore\\cv_" + str(cvids[line].get('data-hh-last-experience-id') + ".html"), 'a', encoding='utf-8')
+        cv_file = open("CVStore\\cv_" + str(cvids[line].get('data-hh-last-experience-id') + ".html"), 'w', encoding='utf-8')
 
         cv_file.write("\n\n\n <br>--- CV#:" + str(cvids[line].get('data-hh-last-experience-id')) +
                       " --- " + file_list[g] + "<br> \n\n\n")
-        cv_file.write(str(cvs[line]))
+
+        cv_soup = BeautifulSoup(str(cvs[line]), 'html.parser')
+        cv_file.write(str(cv_soup.prettify()))
 
         cv_file.close()
 
