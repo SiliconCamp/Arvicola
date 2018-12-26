@@ -30,7 +30,6 @@ def cv_parse(hh_filename):
         cv_fullname_list = cv_fullname[0].split(" ")
         cv_fullname_template = ("\n<br>Фамилия", "\n<br>Имя", "\n<br>Отчество", "\n<br>#", "\n<br>#", "\n<br>#")
 
-
         cv_file.write("<p>")
         for name_item in range(0, len(cv_fullname_list)):
             cv_file.write(cv_fullname_template[name_item] + ": <b>" + str(cv_fullname_list[name_item]) + "</b>")
