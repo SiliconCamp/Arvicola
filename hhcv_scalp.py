@@ -25,8 +25,10 @@ def cv_parse(hh_filename):
         cv_fullname = cv_soup.find(class_="resume-search-item__fullname")
         cv_fullname = str(cv_fullname.text)
         cv_fullname = cv_fullname.split(",")
+        cv_fullname[0] = cv_fullname[0].strip()  # Убираем лишние пробелы в начале и конце ФИО
+        cv_fullname[0] = re.sub(" +", " ", cv_fullname[0])  # Убираем лишние пробелы между словами
         cv_fullname_list = cv_fullname[0].split(" ")
-        cv_fullname_template = ("\n<br>Фамилия", "\n<br>Имя", "\n<br>Отчество")
+        cv_fullname_template = ("\n<br>Фамилия", "\n<br>Имя", "\n<br>Отчество", "\n<br>#", "\n<br>#", "\n<br>#")
 
 
         cv_file.write("<p>")
